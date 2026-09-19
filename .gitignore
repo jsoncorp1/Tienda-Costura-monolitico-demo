@@ -1,0 +1,17 @@
+# BINARY / OBJ FOLDERS
+[Bb]in/
+[Oo]bj/
+
+# RIDER / VS
+.idea/
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# MAC
+.DS_Store
+
+# ENV
+appsettings.Development.json
+.env

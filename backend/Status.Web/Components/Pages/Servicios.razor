@@ -1,0 +1,103 @@
+@page "/servicios"
+<PageTitle>Nuestros Servicios - STATUS</PageTitle>
+
+<div style="background: var(--secondary); min-height: 100vh;">
+  
+  <div style="background: linear-gradient(135deg, rgba(31,78,95,0.92), rgba(31,78,95,0.8)), url('/images/srv-costura.jpg') center/cover no-repeat; padding: 80px 5% 60px; text-align: center;">
+    <p style="color: var(--mostaza); font-weight: 700; font-size: 0.95rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px;">STATUS — Confección & Personalización</p>
+    <h1 style="font-size: 3rem; color: white; letter-spacing: -0.5px; margin: 0; line-height: 1.15;">
+      Servicios que <span style="color: var(--mostaza);">ofrecemos</span>
+    </h1>
+    <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem; max-width: 600px; margin: 20px auto 0;">Calidad, precisión y personalización en cada puntada.</p>
+  </div>
+
+  <div style="padding: 80px 0; background: white;">
+    @foreach (var (srv, idx) in services.Select((s, i) => (s, i)))
+    {
+      <div class="fade-in-section" style="
+          display: flex; 
+          flex-direction: @(idx % 2 == 0 ? "row" : "row-reverse");
+          align-items: center;
+          max-width: 1400px;
+          margin: 0 auto;
+          min-height: 600px;
+          flex-wrap: wrap;
+          margin-bottom: 50px;
+          opacity: 0;
+          animation: fadeInUp 1s ease forwards;
+          animation-delay: @(idx * 0.2)s;
+        ">
+        
+        <div style="flex: 1 1 500px; height: 100%; min-height: 600px; position: relative; overflow: hidden;">
+          <img src="@srv.Image" alt="@srv.Title" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" />
+          <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);"></div>
+        </div>
+
+        <div style="flex: 1 1 500px; padding: 80px 6%; background: white; position: relative;">
+          
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 16px; background: var(--primary); margin-bottom: 30px;">
+            @((MarkupString)srv.IconSvg)
+          </div>
+          
+          <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; line-height: 1.2;">@srv.Title</h2>
+          <p style="font-size: 1.15rem; color: var(--text-light); line-height: 1.8; margin-bottom: 40px;">
+            @srv.Desc
+          </p>
+          
+          <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+            <a href="@BuildWhatsappLink(srv.Title)" target="_blank" rel="noreferrer" class="btn-primary" style="padding: 16px 32px;">
+              <svg style="margin-right: 10px;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              Consultar Servicio
+            </a>
+            <a href="/empresas" class="btn-secondary" style="color: var(--primary); border-color: var(--border); background: transparent;">
+              Cotización Mayorista
+            </a>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+@code {
+    private string BuildWhatsappLink(string service)
+    {
+        return $"https://wa.me/59171923455?text=Hola STATUS, me gustaría obtener más información sobre su servicio de {Uri.EscapeDataString(service)}.";
+    }
+
+    private List<ServiceInfo> services = new()
+    {
+        new ServiceInfo { 
+            Title = "Costura Premium a Medida", 
+            Desc = "Costura de ropa institucional y deportiva (chamarras, chalecos, rompevientos, parkas, polos, poleras, camisas, conjuntos). También fabricamos mochilas, maletines, bolsos, billeteras, carpeteros, portadocumentos y riñoneras con acabados de alta calidad.", 
+            Image = "/images/srv-costura.jpg",
+            IconSvg = "<svg fill=\"none\" stroke=\"var(--mostaza)\" stroke-width=\"1.5\" viewBox=\"0 0 24 24\" width=\"32\" height=\"32\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z\"></path></svg>" 
+        },
+        new ServiceInfo { 
+            Title = "Bordado Industrial Computarizado", 
+            Desc = "Agrega textura, elegancia y relieve a tus uniformes. Contamos con maquinaria multi-cabezal de última generación capaz de replicar escudos y logotipos complejos con precisión milimétrica y colores vibrantes.", 
+            Image = "/images/srv-bordado.jpg",
+            IconSvg = "<svg fill=\"none\" stroke=\"var(--mostaza)\" stroke-width=\"1.5\" viewBox=\"0 0 24 24\" width=\"32\" height=\"32\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M13 10V3L4 14h7v7l9-11h-7z\"></path></svg>" 
+        },
+        new ServiceInfo { 
+            Title = "Sublimado Textil Alta Definición", 
+            Desc = "Impresión digital sin límite de colores infundida directamente en la fibra. La solución perfecta para indumentaria deportiva, camisetas de equipos y diseños panorámicos que requieren mantenerse transpirables y ligeros.", 
+            Image = "/images/srv-sublimado.jpg",
+            IconSvg = "<svg fill=\"none\" stroke=\"var(--mostaza)\" stroke-width=\"1.5\" viewBox=\"0 0 24 24\" width=\"32\" height=\"32\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z\"></path></svg>" 
+        },
+        new ServiceInfo { 
+            Title = "Estampado DTF Vanguardista", 
+            Desc = "La técnica Direct to Film es ultra resistente y versátil. Permite estampar gráficos vibrantes a todo color sobre casi cualquier material (algodón, lona, cuero) sin cuartearse y soportando lavados industriales.", 
+            Image = "/images/srv-dtf.jpg",
+            IconSvg = "<svg fill=\"none\" stroke=\"var(--mostaza)\" stroke-width=\"1.5\" viewBox=\"0 0 24 24\" width=\"32\" height=\"32\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01\"></path></svg>" 
+        }
+    };
+
+    private class ServiceInfo
+    {
+        public string Title { get; set; } = "";
+        public string Desc { get; set; } = "";
+        public string Image { get; set; } = "";
+        public string IconSvg { get; set; } = "";
+    }
+}

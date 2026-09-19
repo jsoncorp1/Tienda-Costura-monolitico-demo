@@ -1,0 +1,165 @@
+@page "/empresas"
+@rendermode InteractiveServer
+@inject NavigationManager Nav
+<PageTitle>Cotiza tu Pedido - STATUS</PageTitle>
+
+<div class="corporate-layout">
+    <div class="corporate-form-container">
+        <div class="corporate-form-inner">
+            <h1 class="corporate-title">Cotiza tu pedido</h1>
+            <p class="corporate-subtitle">Déjanos tus datos y te enviaremos una propuesta a medida con las mejores tarifas de producción.</p>
+
+            <form style="display: flex; flex-direction: column; gap: 25px;">
+                
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: var(--text); font-size: 0.95rem;">Razón Social / Institución</label>
+                        <input type="text" @bind="RazonSocial" placeholder="Ej. Colegio San Calixto" class="corporate-input" />
+                    </div>
+                    <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: var(--text); font-size: 0.95rem;">NIT (Opcional)</label>
+                        <input type="text" @bind="Nit" placeholder="Ej. 12345678" class="corporate-input" />
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: var(--text); font-size: 0.95rem;">Nombre de Contacto</label>
+                        <input type="text" @bind="NombreContacto" placeholder="Ej. Juan Pérez" class="corporate-input" />
+                    </div>
+                    <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: var(--text); font-size: 0.95rem;">WhatsApp de Contacto</label>
+                        <input type="tel" @bind="Telefono" placeholder="Ej. +591 71234567" class="corporate-input" />
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-weight: 600; color: var(--text); font-size: 0.95rem;">¿Qué productos estás buscando?</label>
+                    <textarea rows="4" @bind="ProductosBuscados" placeholder="Ej. Necesitamos 50 mochilas ST1024 con el logo bordado del colegio..." class="corporate-input" style="resize: vertical; font-family: inherit;"></textarea>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(ErrorMsg))
+                {
+                    <div style="background: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 12px 18px; border-radius: 10px; font-size: 0.9rem;">
+                        ⚠️ @ErrorMsg
+                    </div>
+                }
+
+                <button type="button" @onclick="EnviarPorWhatsApp" class="btn-primary" style="margin-top: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem; padding: 18px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    Enviar por WhatsApp
+                </button>
+                <p style="text-align: center; color: var(--text-light); font-size: 0.85rem; margin-top: 10px;">
+                    Te responderemos en menos de 2 horas hábiles. 🚀
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div class="corporate-image-container">
+        <!-- Imagen de marketing colocada por CSS -->
+    </div>
+</div>
+
+<style>
+    .corporate-layout {
+        display: flex;
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+    }
+    .corporate-form-container {
+        flex: 1;
+        padding: 60px 8%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: white;
+    }
+    .corporate-form-inner {
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .corporate-logo {
+        height: 50px;
+        margin-bottom: 30px;
+    }
+    .corporate-title {
+        color: var(--primary);
+        font-size: 2.5rem;
+        letter-spacing: -0.5px;
+        margin: 0 0 10px 0;
+    }
+    .corporate-subtitle {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        margin: 0 0 40px 0;
+    }
+    .corporate-input {
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        font-size: 1rem;
+        outline: none;
+        transition: border 0.3s;
+    }
+    .corporate-input:focus {
+        border-color: var(--primary);
+    }
+    .corporate-image-container {
+        display: none;
+    }
+
+    @@media (min-width: 900px) {
+        .corporate-image-container {
+            display: block;
+            flex: 1.2;
+            background: url('/images/corporativo.jpg') center/cover no-repeat;
+            position: relative;
+        }
+    }
+</style>
+
+@code {
+    [SupplyParameterFromQuery(Name = "producto")]
+    public string? ProductoQuery { get; set; }
+    
+    [SupplyParameterFromQuery(Name = "qty")]
+    public string? QtyQuery { get; set; }
+
+    private string RazonSocial = "";
+    private string Nit = "";
+    private string NombreContacto = "";
+    private string Telefono = "";
+    private string ProductosBuscados = "";
+    private string ErrorMsg = "";
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(ProductoQuery))
+        {
+            ProductosBuscados = $"Necesitamos cotizar {QtyQuery ?? "varias"} unidades del producto {ProductoQuery}.\n\nIncluir personalización: ";
+        }
+    }
+
+    private void EnviarPorWhatsApp()
+    {
+        ErrorMsg = "";
+
+        if (string.IsNullOrWhiteSpace(NombreContacto) || string.IsNullOrWhiteSpace(Telefono) || string.IsNullOrWhiteSpace(ProductosBuscados))
+        {
+            ErrorMsg = "Por favor completa tu nombre, WhatsApp y los productos que necesitas.";
+            return;
+        }
+
+        var mensaje = $"Hola STATUS! Quiero cotizar un pedido.\n\n" +
+                      $"🏢 Empresa/Institución: {(string.IsNullOrWhiteSpace(RazonSocial) ? "(Personal)" : RazonSocial)}\n" +
+                      $"🪪 NIT: {(string.IsNullOrWhiteSpace(Nit) ? "No aplica" : Nit)}\n" +
+                      $"👤 Contacto: {NombreContacto}\n" +
+                      $"📱 WhatsApp: {Telefono}\n\n" +
+                      $"📦 Productos que necesito:\n{ProductosBuscados}";
+
+        var url = $"https://wa.me/59171923455?text={Uri.EscapeDataString(mensaje)}";
+        Nav.NavigateTo(url, forceLoad: true);
+    }
+}

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Status.Application/Status.Application.csproj" />
+  <Project Path="Status.Domain/Status.Domain.csproj" />
+  <Project Path="Status.Infrastructure/Status.Infrastructure.csproj" />
+  <Project Path="Status.Web/Status.Web.csproj" />
+</Solution>

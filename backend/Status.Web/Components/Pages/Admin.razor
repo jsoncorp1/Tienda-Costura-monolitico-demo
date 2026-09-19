@@ -1,0 +1,89 @@
+@page "/admin"
+@rendermode InteractiveServer
+
+<PageTitle>Admin Dashboard - Métricas</PageTitle>
+
+<div style="background: #F4F7F6; min-height: 100vh; padding: 40px 5%; font-family: 'Inter', sans-serif;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+            <div>
+                <h1 style="color: var(--primary); margin: 0; font-size: 2rem;">Panel de Control STATUS</h1>
+                <p style="color: var(--text-light); margin: 5px 0 0 0;">Resumen del día: @DateTime.Now.ToString("dd MMMM yyyy")</p>
+            </div>
+            <a href="/" class="btn-primary" style="padding: 10px 24px; font-size: 0.95rem;">Volver al Sitio</a>
+        </div>
+
+        <!-- Métricas Principales -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            <MetricCard Title="Ventas del Mes" Value="Bs. 24,500" Trend="+12%" Icon="dollar-sign" />
+            <MetricCard Title="Cotizaciones Activas" Value="14" Trend="+3%" Icon="file-text" />
+            <MetricCard Title="Clientes Corporativos" Value="8" Trend="+1" Icon="users" />
+            <MetricCard Title="Flujo Esporádico" Value="45%" Trend="-2%" Icon="activity" />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+            <!-- Tabla de Pedidos Recientes -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                <h3 style="margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 15px;">Cotizaciones Recientes</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                    <thead>
+                        <tr style="text-align: left; color: var(--text-light); border-bottom: 1px solid var(--border);">
+                            <th style="padding: 12px 10px;">Referencia</th>
+                            <th style="padding: 12px 10px;">Cliente</th>
+                            <th style="padding: 12px 10px;">Estado</th>
+                            <th style="padding: 12px 10px;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in pedidosDummy)
+                        {
+                            <tr style="border-bottom: 1px solid var(--secondary); transition: background 0.2s;" onmouseover="this.style.background='#F9FBFA'" onmouseout="this.style.background='white'">
+                                <td style="padding: 15px 10px; font-weight: 600; color: var(--text);">@p.Ref</td>
+                                <td style="padding: 15px 10px; color: var(--text-light);">@p.Cliente</td>
+                                <td style="padding: 15px 10px;">
+                                    <span style="padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; background: @(p.Estado == "Confirmada" ? "#E3FCEF" : "#FFF0E6"); color: @(p.Estado == "Confirmada" ? "#006644" : "#FF6600");">
+                                        @p.Estado
+                                    </span>
+                                </td>
+                                <td style="padding: 15px 10px;">
+                                    <button style="background: transparent; border: none; color: var(--primary); cursor: pointer; text-decoration: underline;">Ver</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resumen de Productos Más Solicitados -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                <h3 style="margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 15px;">Más Solicitados</h3>
+                
+                <div style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center;">
+                        <span style="font-weight: 600;">ST1032 Mochila</span>
+                        <span style="background: var(--mostaza); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.8rem;">32 pedidos</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center;">
+                        <span style="font-weight: 600;">Camisas Corporativas</span>
+                        <span style="background: var(--accent); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.8rem;">18 pedidos</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center;">
+                        <span style="font-weight: 600;">ST1024 Ejecutiva</span>
+                        <span style="background: var(--primary); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.8rem;">15 pedidos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<(string Ref, string Cliente, string Estado)> pedidosDummy = new()
+    {
+        ("COT-2026-001", "Colegio San Calixto", "Recibida"),
+        ("COT-2026-002", "Banco Mercantil", "Confirmada"),
+        ("COT-2026-003", "Juan Perez (Esporádico)", "Confirmada"),
+        ("COT-2026-004", "Ministerio Educación", "Recibida")
+    };
+}

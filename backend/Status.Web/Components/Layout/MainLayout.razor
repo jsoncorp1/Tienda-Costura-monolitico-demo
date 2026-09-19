@@ -1,0 +1,162 @@
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+<div class="page">
+    <nav class="navbar">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="/" style="display: flex; align-items: center;">
+                <img src="/images/logo-white.png" alt="STATUS Logo" style="height: 45px; object-fit: contain;" />
+            </a>
+        </div>
+
+        <!-- Desktop links -->
+        <div class="navbar-links navbar-desktop" style="display: flex; align-items: center;">
+            <a href="/" style="@NavStyle("/", exact: true)">Inicio</a>
+            <a href="/catalogo" style="@NavStyle("/catalogo")">Catálogo</a>
+            <a href="/servicios" style="@NavStyle("/servicios")">Servicios</a>
+            <a href="/empresas" style="background: var(--mostaza); color: var(--primary); padding: 8px 18px; border-radius: 8px; font-weight: bold; margin-left: 10px; box-shadow: 0 4px 10px rgba(239, 184, 16, 0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Cotizar</a>
+        </div>
+
+        <!-- Mobile hamburger button -->
+        <button class="hamburger-btn" onclick="document.getElementById('mobileDrawer').classList.toggle('open')" aria-label="Abrir menú">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobileDrawer" class="mobile-drawer-overlay" onclick="if(event.target===this) this.classList.remove('open')">
+        <div class="mobile-drawer">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <img src="/images/logo-white.png" alt="STATUS" style="height: 40px;" />
+                <button onclick="document.getElementById('mobileDrawer').classList.remove('open')" style="background: none; border: none; color: white; cursor: pointer; padding: 5px;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <a href="/" class="mobile-nav-link" onclick="document.getElementById('mobileDrawer').classList.remove('open')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Inicio
+            </a>
+            <a href="/catalogo" class="mobile-nav-link" onclick="document.getElementById('mobileDrawer').classList.remove('open')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Catálogo
+            </a>
+            <a href="/servicios" class="mobile-nav-link" onclick="document.getElementById('mobileDrawer').classList.remove('open')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Servicios
+            </a>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15);">
+                <a href="/empresas" class="mobile-nav-link" style="background: var(--mostaza); color: var(--primary); border-radius: 12px; font-weight: 700; justify-content: center;" onclick="document.getElementById('mobileDrawer').classList.remove('open')">
+                    Cotizar Pedido
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        @Body
+    </main>
+
+    <Footer />
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<a href="https://wa.me/59171923455" target="_blank" rel="noopener noreferrer" class="whatsapp-global-btn" aria-label="Contactar por WhatsApp">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+    </svg>
+</a>
+
+<style>
+    /* Hamburger: hidden on desktop, visible on mobile */
+    .hamburger-btn {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--secondary);
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    /* Mobile Drawer */
+    .mobile-drawer-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 9998;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .mobile-drawer-overlay.open {
+        opacity: 1;
+        visibility: visible;
+    }
+    .mobile-drawer {
+        position: absolute;
+        top: 0; right: 0;
+        width: 300px;
+        max-width: 85vw;
+        height: 100%;
+        background: linear-gradient(180deg, var(--primary) 0%, #163a47 100%);
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: -10px 0 40px rgba(0,0,0,0.3);
+    }
+    .mobile-drawer-overlay.open .mobile-drawer {
+        transform: translateX(0);
+    }
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: rgba(255,255,255,0.9);
+        text-decoration: none;
+        padding: 16px 18px;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    .mobile-nav-link:hover {
+        background: rgba(255,255,255,0.1);
+        color: white;
+    }
+
+    @@media (max-width: 768px) {
+        .navbar-desktop { display: none !important; }
+        .hamburger-btn { display: flex; }
+    }
+</style>
+
+@code {
+    private string NavStyle(string href, bool exact = false)
+    {
+        var currentUri = NavigationManager.Uri;
+        var baseUri = NavigationManager.BaseUri.TrimEnd('/');
+        var path = currentUri.Replace(baseUri, "").ToLower();
+        var target = href.ToLower().TrimEnd('/');
+        
+        bool isActive = exact
+            ? (path == target || path == "" && target == "/")
+            : (path == target || path.StartsWith(target + "/") || (target == "/" && path == ""));
+
+        return isActive
+            ? "border-bottom: 3px solid var(--mostaza); padding-bottom: 3px; color: var(--mostaza);"
+            : "";
+    }
+}

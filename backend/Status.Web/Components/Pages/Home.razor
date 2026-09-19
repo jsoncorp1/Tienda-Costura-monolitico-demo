@@ -1,0 +1,239 @@
+@page "/"
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+
+<PageTitle>Status - Confección Textil</PageTitle>
+
+<!-- Carrusel Principal -->
+<div style="position: relative; width: 100%; height: 85vh; overflow: hidden; background: var(--primary);">
+    
+    <!-- Pista del carrusel: movida via JS Interop para que la transición CSS funcione -->
+    <div id="carousel-track" style="display: flex; width: 300%; height: 100%; transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);">
+        @foreach (var img in carouselImages)
+        {
+            <div style="flex: 0 0 33.3333%; height: 100%;">
+                <img src="@img" alt="Banner Status" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+        }
+    </div>
+
+    <!-- Overlay oscuro para legibilidad -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.65) 40%, rgba(0,0,0,0.15)); z-index: 5; pointer-events: none;"></div>
+
+    <!-- Panel Glassmorphism con texto sobre el carrusel -->
+    <div style="position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; padding: 0 6%;">
+        <div style="max-width: 680px; background: rgba(10, 25, 35, 0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 24px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 24px 50px rgba(0,0,0,0.4); padding: 50px;">
+            <h1 style="color: white; font-size: 3.8rem; font-weight: 800; line-height: 1.1; letter-spacing: -1px; margin: 0 0 18px 0;">
+                El arte de la <span style="color: var(--mostaza);">costura y confección.</span>
+            </h1>
+            <p style="color: rgba(255,255,255,0.88); font-size: 1.2rem; margin: 0 0 36px 0; line-height: 1.65; font-weight: 400;">
+                Especialistas en la confección de mochilas corporativas, maletines y dotación textil a medida con acabados de primera.
+            </p>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <a href="/catalogo" class="btn-primary" style="padding: 15px 32px; font-size: 1.05rem; box-shadow: 0 10px 25px rgba(239,184,16,0.35);">Ver Catálogo</a>
+                <a href="/servicios" style="padding: 15px 32px; font-size: 1.05rem; background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; text-decoration: none; font-weight: 600;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">Nuestros Servicios</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controles Izquierda/Derecha -->
+    <button @onclick="PrevSlide" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: white; border: none; width: 52px; height: 52px; border-radius: 50%; cursor: pointer; z-index: 20; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.8)'" onmouseout="this.style.background='rgba(0,0,0,0.4)'">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button @onclick="NextSlide" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: white; border: none; width: 52px; height: 52px; border-radius: 50%; cursor: pointer; z-index: 20; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.8)'" onmouseout="this.style.background='rgba(0,0,0,0.4)'">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+
+    <!-- Puntos indicadores -->
+    <div style="position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 20;">
+        @for (int i = 0; i < carouselImages.Length; i++)
+        {
+            var idx = i;
+            <button @onclick="() => GoToSlide(idx)" style="width: @(currentImage == i ? "32px" : "12px"); height: 12px; border-radius: 6px; border: 2px solid white; background: @(currentImage == i ? "white" : "transparent"); cursor: pointer; padding: 0; transition: all 0.4s;"></button>
+        }
+    </div>
+</div>
+
+
+<!-- Carrusel de Servicios -->
+<div style="padding: 80px 5%; background: white;">
+    <h2 class="section-title">Nuestros Servicios</h2>
+    
+    <div style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; max-width: 1400px; margin: 0 auto; scroll-snap-type: x mandatory; scrollbar-width: none;">
+        
+        <div style="min-width: 300px; flex: 1; border-radius: 20px; overflow: hidden; position: relative; scroll-snap-align: start; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer;" onclick="window.location.href='/servicios#costura'">
+            <img src="/images/srv-costura.jpg" style="width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(31,78,95,0.9), transparent);">
+                <h3 style="color: white; margin: 0; font-size: 1.5rem;">Costura Premium</h3>
+            </div>
+        </div>
+
+        <div style="min-width: 300px; flex: 1; border-radius: 20px; overflow: hidden; position: relative; scroll-snap-align: start; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer;" onclick="window.location.href='/servicios#bordado'">
+            <img src="/images/srv-bordado.jpg" style="width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(31,78,95,0.9), transparent);">
+                <h3 style="color: white; margin: 0; font-size: 1.5rem;">Bordado Industrial</h3>
+            </div>
+        </div>
+
+        <div style="min-width: 300px; flex: 1; border-radius: 20px; overflow: hidden; position: relative; scroll-snap-align: start; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer;" onclick="window.location.href='/servicios#sublimado'">
+            <img src="/images/srv-sublimado.jpg" style="width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(31,78,95,0.9), transparent);">
+                <h3 style="color: white; margin: 0; font-size: 1.5rem;">Sublimado Textil</h3>
+            </div>
+        </div>
+
+        <div style="min-width: 300px; flex: 1; border-radius: 20px; overflow: hidden; position: relative; scroll-snap-align: start; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer;" onclick="window.location.href='/servicios#dtf'">
+            <img src="/images/srv-dtf.jpg" style="width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(31,78,95,0.9), transparent);">
+                <h3 style="color: white; margin: 0; font-size: 1.5rem;">Estampado DTF</h3>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Sección de Productos Destacados -->
+<div style="padding: 100px 5%; background: var(--secondary);">
+    <h2 class="section-title">Productos Destacados</h2>
+    
+    <div class="bento-grid">
+        <div class="bento-item">
+            <img src="/images/1.jpg" alt="Mochila Premium" />
+            <div class="bento-overlay">
+                <h3>Mochila Ejecutiva STATUS</h3>
+                <span>ST-1024</span>
+            </div>
+        </div>
+        <div class="bento-item">
+            <img src="/images/2.jpg" alt="Mochila Deportiva" />
+            <div class="bento-overlay">
+                <h3>Mochila con Zapatero</h3>
+                <span>ST-1032</span>
+            </div>
+        </div>
+        <div class="bento-item">
+            <img src="/images/5.jpg" alt="Billeteras" />
+            <div class="bento-overlay">
+                <h3>Billeteras de Cuero Sintético</h3>
+                <span>Premium</span>
+            </div>
+        </div>
+        <div class="bento-item">
+            <img src="/images/6.jpg" alt="Ropa Corporativa" />
+            <div class="bento-overlay">
+                <h3>Camisas Corporativas</h3>
+                <span>Bordadas</span>
+            </div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 50px;">
+        <a href="/catalogo" class="btn-secondary" style="color: var(--primary); border-color: var(--primary);">Ver todo el catálogo</a>
+    </div>
+</div>
+
+<!-- Sección de Beneficios / Por qué nosotros -->
+<div style="padding: 100px 5%; background: white;">
+    <h2 class="section-title">Por qué elegir STATUS</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;">
+        <div class="glass-panel" style="background: var(--secondary);">
+            <div style="width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+            <h3 style="font-size: 1.4rem; margin-bottom: 15px;">Calidad Garantizada</h3>
+            <p style="color: var(--text-light); line-height: 1.6;">Utilizamos los mejores materiales del mercado. Hilos de alta tenacidad, lonas resistentes y acabados precisos.</p>
+        </div>
+        
+        <div class="glass-panel" style="background: var(--secondary);">
+            <div style="width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <h3 style="font-size: 1.4rem; margin-bottom: 15px;">Entregas a Tiempo</h3>
+            <p style="color: var(--text-light); line-height: 1.6;">Nuestra capacidad de producción instalada nos permite cumplir con grandes volúmenes en tiempos récord.</p>
+        </div>
+        
+        <div class="glass-panel" style="background: var(--secondary);">
+            <div style="width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h3 style="font-size: 1.4rem; margin-bottom: 15px;">Atención Personalizada</h3>
+            <p style="color: var(--text-light); line-height: 1.6;">Un ejecutivo te acompañará desde la cotización hasta la entrega final de tu producto corporativo.</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int currentImage = 0;
+    private string[] carouselImages = new[] { "/images/banner1.jpg", "/images/banner2.jpg", "/images/banner3.jpg" };
+    private CancellationTokenSource? _cts;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Posicionar el carrusel al slide inicial via JS
+            await MoveCarousel();
+            _cts = new CancellationTokenSource();
+            _ = AutoAdvance(_cts.Token);
+        }
+    }
+
+    private async Task MoveCarousel()
+    {
+        // Mueve el track del carrusel via JS interop - garantiza que la transición CSS funcione
+        double pct = currentImage * (100.0 / 3.0);
+        await JS.InvokeVoidAsync("eval",
+            $"var el = document.getElementById('carousel-track'); if(el) el.style.transform = 'translateX(-{pct.ToString("F4", System.Globalization.CultureInfo.InvariantCulture)}%)';");
+    }
+
+    private async Task AutoAdvance(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            await Task.Delay(4500, token).ContinueWith(_ => { });
+            if (!token.IsCancellationRequested)
+            {
+                currentImage = (currentImage + 1) % carouselImages.Length;
+                await InvokeAsync(async () =>
+                {
+                    StateHasChanged();
+                    await MoveCarousel();
+                });
+            }
+        }
+    }
+
+    private async Task NextSlide()
+    {
+        currentImage = (currentImage + 1) % carouselImages.Length;
+        await MoveCarousel();
+        ResetTimer();
+    }
+
+    private async Task PrevSlide()
+    {
+        currentImage = (currentImage - 1 + carouselImages.Length) % carouselImages.Length;
+        await MoveCarousel();
+        ResetTimer();
+    }
+
+    private async Task GoToSlide(int index)
+    {
+        currentImage = index;
+        await MoveCarousel();
+        ResetTimer();
+    }
+
+    private void ResetTimer()
+    {
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+        _ = AutoAdvance(_cts.Token);
+    }
+
+    public void Dispose()
+    {
+        _cts?.Cancel();
+    }
+}
