@@ -1,0 +1,30 @@
+# Artefactos de compilación locales: deben reconstruirse dentro de la imagen
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# IDE / control de versiones
+.git/
+.gitignore
+.idea/
+.vs/
+.vscode/
+**/*.user
+**/*.suo
+**/.DS_Store
+
+# Configuración local que no debe viajar a la imagen
+**/appsettings.Development.json
+**/appsettings.Local.json
+.env
+.env.*
+**/Properties/launchSettings.json
+
+# Documentación y contenedores (no son parte del build)
+01-Estandar-Tecnico/
+02-Negocio/
+*.md
+Dockerfile*
+docker-compose*.yml
+.dockerignore
